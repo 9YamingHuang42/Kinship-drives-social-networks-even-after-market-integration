@@ -1,6 +1,7 @@
 library( dagitty )
 library( dplyr )
 library( rethinking )
+library( tibble )
 library( gt )
 library( gto )
 library( officer )
@@ -9,7 +10,7 @@ library( ggdist )
 options( digits = 8 )
 
 # Load data ----
-load( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Data_Kinship_drives_social_networks_even_after_market_integration.RData")
+load( "Data_Kinship_drives_social_networks_even_after_market_integration.RData" )
 
 #1 DAG ----
 Dag <- 
@@ -38,41 +39,6 @@ U_Village -> Density
 drawdag( Dag , radius = 8.8 )
 
 #2 Data preparation ----
-# Ego.data.file <- "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Ego.data.used.xlsx"
-# Ego.data <- readxl::read_xlsx( Ego.data.file , 1 )
-# Ego.data$ID <- as.integer(as.factor(Ego.data$ITID))
-# Ego.data <- Ego.data %>%
-#   mutate( VID = case_when( VillageID == "V1" ~ "V3" ,
-#                            VillageID == "V2" ~ "V6" ,
-#                            VillageID == "V3" ~ "V9" ,
-#                            VillageID == "V4" ~ "V1" ,
-#                            VillageID == "V5" ~ "V7" ,
-#                            VillageID == "V6" ~ "V5" ,
-#                            VillageID == "V7" ~ "V8" ,
-#                            VillageID == "V8" ~ "V10" ,
-#                            VillageID == "V9" ~ "V11" ,
-#                            VillageID == "V10" ~ "V12" ,
-#                            VillageID == "V11" ~ "V2" ,
-#                            VillageID == "V12" ~ "V4" ,
-#                            VillageID == "V13" ~ "V13" ,
-#                            VillageID == "V14" ~ "V14" ) ,
-#           VID = factor( VID ,
-#                         levels = c( "V1" , "V2" , "V3" , "V4" , "V5" ,
-#                                     "V6" , "V7" , "V8" , "V9" , "V10" ,
-#                                     "V11" , "V12" , "V13" , "V14" ) ,
-#                         labels = c( "V1" , "V2" , "V3" , "V4" , "V5" ,
-#                                     "V6" , "V7" , "V8" , "V9" , "V10" ,
-#                                     "V11" , "V12" , "V13" , "V14" ) ) ,
-#           Gender = factor( Gender ,
-#                            levels = c( "Female" , "Male" ) ,
-#                            labels = c( "Female" , "Male" ) ) ,
-#           Residence = factor( Residence ,
-#                               levels = c( "Female.place" , "Both.place" , "Male.place" ) ,
-#                               labels = c( "Matrilocal" , "Bilocal" , "Patrilocal" ) ) )%>%
-#   select( - c( "ITID" , "VillageID" ) )
-# 
-# save.image( file = "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Data_Kinship_drives_social_networks_even_after_market_integration.RData" )
-
 # Standardise age 
 # Natural logarithmic transformation and standardisation of market
 Ego.data <- Ego.data %>% 
@@ -316,7 +282,7 @@ p_matrix_GA_fri_M <- predict_p_matrix_GA( post_samples = Post_model_GA_fri ,
                                           n_samples = 6000 )
 
 ####3.1.5.1 Gender-specific effects of age ----
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Age_stratified_by_gender.jpg" , 
+jpeg( "Age_stratified_by_gender.jpg" , 
       width = 200 , height = 160 , units = "mm" , res = 300 )
 
 {par(mfrow=c(2,2), mar = c(4.5, 4.5, 1.8, 1))
@@ -485,7 +451,7 @@ jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocen
 dev.off()
 
 ####3.1.5.2 Gender differences across age ----
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Age_gender_diff.jpg" , 
+jpeg( "Age_gender_diff.jpg" , 
       width = 200 , height = 160 , units = "mm" , res = 300 )
 
 {par(mfrow=c(2,2), mar = c(4.5, 4.5, 1.8, 1))
@@ -908,7 +874,7 @@ tibble( Value = c( Post_model_GR_all$bGR[,1,1] ,
         legend.title=element_text(size=14,face = "bold"),
         legend.text=element_text(size=12,face = "bold"))
 
-ggsave( filename = "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Residence_women.jpeg" , 
+ggsave( filename = "Residence_women.jpeg" , 
         width = 160 , height = 150 , units = "mm" , dpi = 300 )
 
 # Men
@@ -975,7 +941,7 @@ tibble( Value = c( Post_model_GR_all$bGR[,2,1] ,
         legend.title=element_text(size=14,face = "bold"),
         legend.text=element_text(size=12,face = "bold"))
 
-ggsave( filename = "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Residence_men.jpeg" , 
+ggsave( filename = "Residence_men.jpeg" , 
         width = 160 , height = 150 , units = "mm" , dpi = 300 )
 
 #####3.2.5.1.2 Residence difference for women and men, respectively ----
@@ -1047,7 +1013,7 @@ tibble( Value = c( c( Post_model_GR_all$bGR[,1,1] - Post_model_GR_all$bGR[,1,2] 
         legend.title=element_text(size=14,face = "bold"),
         legend.text=element_text(size=12,face = "bold"))
 
-ggsave( filename = "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Residence_diff_women.jpeg" , 
+ggsave( filename = "Residence_diff_women.jpeg" , 
         width = 200 , height = 150 , units = "mm" , dpi = 300 )
 
 # Men
@@ -1118,7 +1084,7 @@ tibble( Value = c( c( Post_model_GR_all$bGR[,2,1] - Post_model_GR_all$bGR[,2,2] 
         legend.title=element_text(size=14,face = "bold"),
         legend.text=element_text(size=12,face = "bold"))
 
-ggsave( filename = "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Residence_diff_men.jpeg" , 
+ggsave( filename = "Residence_diff_men.jpeg" , 
         width = 200 , height = 150 , units = "mm" , dpi = 300 )
 
 # Proportions of mean difference in βR values comparing each pairwise of residences 
@@ -1276,7 +1242,7 @@ tibble( Value = c( c( Post_model_GR_all$bGR[,1,1] - Post_model_GR_all$bGR[,2,1] 
         legend.title=element_text(size=14,face = "bold"),
         legend.text=element_text(size=12,face = "bold"))
 
-ggsave( filename = "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Gender_diff_by_residence.jpeg" , 
+ggsave( filename = "Gender_diff_by_residence.jpeg" , 
         width = 150 , height = 120 , units = "mm" , dpi = 300 )
 
 # Proportions of mean difference in βRvalues comparing women to men
@@ -1872,7 +1838,7 @@ p_matrix_GM_fri_M <- predict_p_matrix_GM( post_samples = Post_model_GM_fri ,
 #####3.3.5.1.1 Gender-specific effects of market integration ----
 Market_seq <- c( ( log( c( seq( 0 , 730 , 10 ) + 1 ) ) - mean( Ego.data$Market_log ) ) / sd( Ego.data$Market_log ) )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_stratified_by_gender.jpg" , 
+jpeg( "Market_stratified_by_gender.jpg" , 
       width = 200 , height = 160 , units = "mm" , res = 300 )
 
 {par(mfrow=c(2,2), mar = c(4.5, 4.5, 1.8, 1))
@@ -2040,7 +2006,7 @@ jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocen
 dev.off()
 
 #####3.3.5.1.2 Gender difference in effects of market integration ----
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_gender_diff.jpg" , 
+jpeg( "Market_gender_diff.jpg" , 
       width = 200 , height = 160 , units = "mm" , res = 300 )
 
 {par(mfrow=c(2,2), mar = c(4.5, 4.5, 1.8, 1))
@@ -2597,7 +2563,7 @@ Plot_GVM_all_data_list <- list(
         p_matrix_M = p_matrix_GVM_all_M_V14 ) 
 )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_gender_village_all.jpg" , 
+jpeg( "Market_gender_village_all.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_specific( Plot_GVM_all_data_list )
 mtext( "All" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
@@ -2723,7 +2689,7 @@ Plot_GVM_genetic_data_list <- list(
         p_matrix_M = p_matrix_GVM_genetic_M_V14 ) 
 )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_gender_village_genetic.jpg" , 
+jpeg( "Market_gender_village_genetic.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_specific( Plot_GVM_genetic_data_list )
 mtext( "Biological kin" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
@@ -2849,7 +2815,7 @@ Plot_GVM_affine_data_list <- list(
         p_matrix_M = p_matrix_GVM_affine_M_V14 ) 
 )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_gender_village_affinal.jpg" , 
+jpeg( "Market_gender_village_affinal.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_specific( Plot_GVM_affine_data_list )
 mtext( "Affinal kin" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
@@ -2975,7 +2941,7 @@ Plot_GVM_fri_data_list <- list(
         p_matrix_M = p_matrix_GVM_fri_M_V14 ) 
 )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_gender_village_fri.jpg" , 
+jpeg( "Market_gender_village_fri.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_specific( Plot_GVM_fri_data_list )
 mtext( "Friend" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
@@ -3018,25 +2984,25 @@ draw_plots_gender_dif <- function( plot_data_list, num_rows = 3, num_cols = 5) {
   }
 }
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_village_gender_diff_all.jpg" , 
+jpeg( "Market_village_gender_diff_all.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_dif( Plot_GVM_all_data_list )
 mtext( "All" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
 dev.off( )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_village_gender_diff_genetic.jpg" , 
+jpeg( "Market_village_gender_diff_genetic.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_dif( Plot_GVM_genetic_data_list )
 mtext( "Biological kin" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
 dev.off( )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_village_gender_diff_affinal.jpg" , 
+jpeg( "Market_village_gender_diff_affinal.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_dif( Plot_GVM_affine_data_list )
 mtext( "Affinal kin" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
 dev.off( )
 
-jpeg( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Market_village_gender_diff_fri.jpg" , 
+jpeg( "Market_village_gender_diff_fri.jpg" , 
       width = 365 , height = 230 , units = "mm" , res = 300 )
 draw_plots_gender_dif( Plot_GVM_fri_data_list )
 mtext( "Friend" , side = 3 , line = -2 , outer = TRUE , cex = 1.5 , font = 2 )
@@ -3302,7 +3268,3 @@ GVM.output <- tibble( Variable =  c( "Age[female]" , "Age[male]" ,
   cols_width( "Variable" ~ px( 170 ) , 
               everything() ~ px( 150 ) )
 GVM.output
-
-# save.image(file = "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Results_Kinship_drives_social_networks_even_after_market_integration.RData" )
-
-# load( "D:\\Shangri-La\\shangri-la data analyses\\ego core networks\\Paper_egocentric_analyses\\Results_Kinship_drives_social_networks_even_after_market_integration.RData" )
