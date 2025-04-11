@@ -3268,3 +3268,4 @@ GVM.output <- tibble( Variable =  c( "Age[female]" , "Age[male]" ,
   cols_width( "Variable" ~ px( 170 ) , 
               everything() ~ px( 150 ) )
 GVM.output
+
